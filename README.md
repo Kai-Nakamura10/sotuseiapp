@@ -146,4 +146,3 @@ FastAPI / Flask：RailsからAIサーバーにリクエストするAPI
 課金機能（有料化）	Pay.jp / Stripe
 API実装	jbuilder / fast_jsonapi / graphql-ruby
 フロント強化	TailwindCSS, Stimulus, Turbo, Hotwire
-a

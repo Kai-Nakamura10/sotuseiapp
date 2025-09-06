@@ -176,3 +176,5 @@ FastAPI / Flask：RailsからAIサーバーにリクエストするAPI
 課金機能（有料化）	Pay.jp / Stripe
 API実装	jbuilder / fast_jsonapi / graphql-ruby
 フロント強化	TailwindCSS, Stimulus, Turbo, Hotwire
+## 画面遷移図
+https://www.figma.com/design/uU4R7IFUSBh8xIay59CnPW/Play-insight?node-id=0-1&t=wBROsEKRLiGlZkO9-1

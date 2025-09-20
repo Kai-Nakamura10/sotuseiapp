@@ -178,3 +178,5 @@ API実装	jbuilder / fast_jsonapi / graphql-ruby
 フロント強化	TailwindCSS, Stimulus, Turbo, Hotwire
 ## 画面遷移図
 https://www.figma.com/design/uU4R7IFUSBh8xIay59CnPW/Play-insight?node-id=0-1&t=wBROsEKRLiGlZkO9-1
+## ER図
+https://drive.google.com/file/d/1Zulu8p8qWhH8viJF0tmd8q2sh8V94qeZ/view?usp=sharing

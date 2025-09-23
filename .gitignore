@@ -37,6 +37,3 @@
 !/app/assets/builds/.keep
 
 /node_modules
-Dockerfile
-compose.yml
-Dockerfile.dev

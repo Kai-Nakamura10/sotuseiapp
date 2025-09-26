@@ -77,6 +77,12 @@ jobs:
           bin/rails db:create
           bin/rails db:migrate
 
+      - name: Prepare DB
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/sotuseiapp_test
+        run: bin/rails db:prepare
+
       - name: Run tests
         env:
           RAILS_ENV: test

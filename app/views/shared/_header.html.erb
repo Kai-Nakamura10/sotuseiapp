@@ -16,24 +16,24 @@
           <%= link_to '基本ルール解説', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
         </li>
         <li>
+          <%= link_to '戦術解説', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+        </li>
+        <li>
           <%= link_to 'ルール検索機能', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
         </li>
         <li>
           <%= link_to '戦術クイズ', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
         </li>
         <li>
-          <%= link_to 'Sign in / Register', '#', class: 'text-blue-600 font-semibold px-4 py-2 rounded hover:bg-blue-100 cursor-pointer' %>
+          <%= link_to '質問集', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+        </li>
+        <li>
+          <%= link_to 'Best Selections', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+        </li>
+        <li>
+          <%= link_to 'Sign out', destroy_user_session_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer', data: { turbo_method: :delete } %>
         </li>
       </ul>
     </div>
-
-    <script>
-      const menuToggle = document.getElementById('menu-toggle');
-      const menu = document.getElementById('menu');
-
-      menuToggle.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-      });
-    </script>
   </nav>
 </header>

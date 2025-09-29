@@ -13,16 +13,16 @@
       <div data-menu-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none">
         <ul class="flex justify-between flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">
           <li>
-            <%= link_to '基本ルール解説', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
+            <%= link_to t('header.basic_rules'), '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
           </li>
           <li>
-            <%= link_to 'ルール検索機能', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.rule_search'), '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to '戦術クイズ', '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.tactics_quiz'), '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to 'Sign in', new_user_session_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.sign_in'), new_user_session_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
         </ul>
       </div>

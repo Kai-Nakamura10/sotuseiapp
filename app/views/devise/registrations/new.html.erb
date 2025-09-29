@@ -1,4 +1,4 @@
-<h2 class= "text-center">Sign up</h2>
+<h2 class= "text-center"><%= t('.title') %></h2>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="actions text-center">
-      <%= f.submit "Sign up", class: "relative z-50 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" %>
+      <%= f.submit t('.create'), class: "relative z-50 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" %>
     </div>
   <% end %>
   <div class="text-center">

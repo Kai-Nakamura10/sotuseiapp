@@ -1,0 +1,16 @@
+ja:
+  devise:
+    sessions:
+      new:
+        login: ログイン
+        title: ログイン
+    shared:
+      links:
+        to_register_page: 登録ページへ
+        password_forget: パスワードをお忘れの方はこちら
+        to_login_page: ログインページへ
+    registrations:
+      new:
+        create: 登録
+        title: ユーザー登録
+        to_login_page: ログインページへ

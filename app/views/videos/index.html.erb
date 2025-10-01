@@ -1,0 +1,38 @@
+<h2>保存済みの動画</h2>
+<ul>
+  <% @videos.each do |v| %>
+    <li style="margin-bottom:1rem;">
+      <div><strong><%= v.title %></strong> /<%= v.description %> /<%= v.visibility %> / <%= v.duration_seconds %>秒</div>
+
+      <%# サムネイルが付いていれば表示 %>
+      <% if v.thumbnail.attached? %>
+        <div>
+          <%= image_tag v.thumbnail, alt: "#{v.title} thumbnail", width: 240 %>
+        </div>
+      <% end %>
+
+      <%# 動画ファイルが付いていればそのまま再生 %>
+      <% if v.file.attached? %>
+        <div>
+          <%= video_tag url_for(v.file), controls: true, width: 480 %>
+        </div>
+      <% else %>
+        <em>動画ファイル未添付</em>
+      <% end %>
+
+      <div style="font-size:12px;color:#666;">保存日時: <%= v.created_at %></div>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with model: @video, url: videos_path, local: true, html: { multipart: true } do |f| %>
+  <%= f.text_field :title, placeholder: "タイトル" %>
+  <%= f.text_area :description, placeholder: "説明" %>
+  <%= f.number_field :duration_seconds, min: 0, step: 1 %>
+  <%= f.select :visibility, [["公開","public"],["限定公開","unlisted"],["非公開","private"]] %>
+
+  <%= f.file_field :file, accept: "video/*" %>
+  <%= f.file_field :thumbnail, accept: "image/*" %>
+
+  <%= f.submit "保存" %>
+<% end %>

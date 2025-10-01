@@ -32,7 +32,7 @@
             <%= link_to t('header.best_selections'), '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to t('header.movies'), '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.videos'), videos_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
             <%= link_to t('header.sign_out'), destroy_user_session_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer', data: { turbo_method: :delete } %>

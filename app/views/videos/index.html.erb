@@ -5,16 +5,17 @@
       <div><strong><%= v.title %></strong> /<%= v.description %> /<%= v.visibility %> / <%= v.duration_seconds %>秒</div>
 
       <%# サムネイルが付いていれば表示 %>
-      <% if v.thumbnail.attached? %>
+      <% poster_url = v.thumbnail.attached? ? url_for(v.thumbnail) : nil %>
+      <% if poster_url %>
         <div>
-          <%= image_tag v.thumbnail, alt: "#{v.title} thumbnail", width: 240 %>
+          <%= image_tag poster_url, alt: "#{v.title} thumbnail", width: 240 %>
         </div>
       <% end %>
 
       <%# 動画ファイルが付いていればそのまま再生 %>
       <% if v.file.attached? %>
         <div>
-          <%= video_tag url_for(v.file), controls: true, width: 480 %>
+          <%= video_tag url_for(v.file), controls: true, width: 480, poster: poster_url %>
         </div>
       <% else %>
         <em>動画ファイル未添付</em>

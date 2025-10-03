@@ -30,5 +30,6 @@ module Myapp
       g.test_framework nil
     end
     config.i18n.default_locale = :ja
+    config.active_job.queue_adapter = :sidekiq
   end
 end

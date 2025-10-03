@@ -32,6 +32,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  worker:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    depends_on:
+      - redis
+  redis:
+    image: redis:7
 volumes:
   bundle_data:
   postgresql_data:

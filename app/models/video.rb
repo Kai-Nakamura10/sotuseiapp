@@ -5,4 +5,11 @@ class Video < ApplicationRecord
 
   validates :title, presence: true
   validates :visibility, inclusion: { in: %w[public unlisted private] }
+  after_commit :enqueue_processing, on: [ :create, :update ], if: -> { file.attached? }
+
+  private
+
+  def enqueue_processing
+    VideoJob.perform_later(id)
+  end
 end

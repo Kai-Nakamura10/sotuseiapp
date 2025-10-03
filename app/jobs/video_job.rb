@@ -9,7 +9,7 @@ class VideoJob < ApplicationJob
     needs_thumbnail = !video.thumbnail.attached?
     return unless needs_duration || needs_thumbnail
 
-    src = Tempfile.new(["video", File.extname(video.file.filename.to_s)])
+    src = Tempfile.new([ "video", File.extname(video.file.filename.to_s) ])
     src.binmode
     src.write(video.file.download)
     src.flush

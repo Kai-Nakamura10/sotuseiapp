@@ -25,15 +25,4 @@
     </li>
   <% end %>
 </ul>
-
-<%= form_with model: @video, url: videos_path, local: true, html: { multipart: true } do |f| %>
-  <%= f.text_field :title, placeholder: "タイトル" %>
-  <%= f.text_area :description, placeholder: "説明" %>
-  <%= f.number_field :duration_seconds, min: 0, step: 1 %>
-  <%= f.select :visibility, [["公開","public"],["限定公開","unlisted"],["非公開","private"]] %>
-
-  <%= f.file_field :file, accept: "video/*" %>
-  <%= f.file_field :thumbnail, accept: "image/*" %>
-
-  <%= f.submit "保存" %>
-<% end %>
+<%=link_to "動画を投稿", new_video_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>

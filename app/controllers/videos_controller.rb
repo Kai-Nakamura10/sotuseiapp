@@ -1,6 +1,10 @@
 class VideosController < ApplicationController
   def index
-    @videos = Video.order(created_at: :desc)
+    @videos = Video.with_attached_file.with_attached_thumbnail.order(created_at: :desc)
+    @video = Video.new
+  end
+
+  def new
     @video = Video.new
   end
 
@@ -10,7 +14,7 @@ class VideosController < ApplicationController
     if @video.save
       redirect_to videos_path, notice: "保存しました"
     else
-      @videos = Video.order(created_at: :desc)
+      @videos = Video.with_attached_file.with_attached_thumbnail.order(created_at: :desc)
       render :index, status: :unprocessable_entity
     end
   end

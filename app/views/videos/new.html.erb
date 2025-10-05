@@ -1,13 +1,31 @@
-<%= form_with model: @video, url: videos_path, local: true, html: { multipart: true } do |f| %>
-  <%= f.text_field :title, placeholder: "タイトル" %>
-  <%= f.text_area :description, placeholder: "説明" %>
-  <%= f.number_field :duration_seconds, min: 0, step: 1 %>
-  <%= f.select :visibility, [["公開","public"],["限定公開","unlisted"],["非公開","private"]] %>
+<h1>動画アップロード</h1>
+<%= form_with model: @video, local: true, html: { multipart: true } do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title, placeholder: "タイトル" %>
+  </div>
 
-  <%= f.file_field :file, accept: "video/*" %>
-  <%= f.file_field :thumbnail, accept: "image/*" %>
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description, placeholder: "説明" %>
+  </div>
 
-  <%= f.submit "保存" %>
+  <div>
+    <%= f.label :visibility %>
+    <%= f.select :visibility, [["公開","public"],["限定公開","unlisted"],["非公開","private"]] %>
+  </div>
+
+  <div>
+    <%= f.label :file, "動画ファイル" %>
+    <%= f.file_field :file, accept: "video/*" %>
+  </div>
+
+  <div>
+    <%= f.label :thumbnail, "サムネイル画像" %>
+    <%= f.file_field :thumbnail, accept: "image/*" %>
+  </div>
+
+  <%= f.submit "アップロード" %>
 <% end %>
 
 <%=link_to "動画一覧へ", videos_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>

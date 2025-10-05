@@ -1,28 +1,38 @@
-<h2>保存済みの動画</h2>
-<ul>
-  <% @videos.each do |v| %>
-    <li style="margin-bottom:1rem;">
-      <div><strong><%= v.title %></strong> /<%= v.description %> /<%= v.visibility %> / <%= v.duration_seconds %>秒</div>
+<div class="container mx-auto px-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6">動画一覧</h1>
 
-      <%# サムネイルが付いていれば表示 %>
-      <% poster_url = v.thumbnail.attached? ? url_for(v.thumbnail) : nil %>
-      <% if poster_url %>
-        <div>
-          <%= image_tag poster_url, alt: "#{v.title} thumbnail", width: 240 %>
-        </div>
+    <ul class="videos-list list-none p-0 m-0 space-y-6">
+      <% @videos.each do |video| %>
+        <li class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <div class="flex flex-col md:flex-row">
+            <% poster_url = video.thumbnail.attached? ? url_for(video.thumbnail) : nil %>
+
+            <div class="w-full md:w-56 flex-shrink-0 bg-gray-100">
+              <% if video.file.attached? %>
+                <%= video_tag url_for(video.file), controls: true, poster: poster_url, preload: 'metadata', muted: true, class: "w-full h-auto object-cover" %>
+              <% elsif poster_url %>
+                <%= image_tag poster_url, alt: "#{video.title} thumbnail", class: "w-full h-auto object-cover" %>
+              <% else %>
+                <div class="w-full h-36 flex items-center justify-center text-gray-400">サムネイルなし</div>
+              <% end %>
+            </div>
+
+            <div class="p-4 flex-1">
+              <div class="text-lg font-semibold text-gray-900 mb-2"><%= video.title %></div>
+              <div class="text-sm text-gray-600 mb-3"><%= truncate(video.description, length: 220) %></div>
+
+              <div class="text-xs text-gray-500 mb-4">公開設定: <%= video.visibility %>  •  長さ: <%= video.duration_seconds.present? ? "#{video.duration_seconds}秒" : "解析中…" %></div>
+
+              <div class="text-xs text-gray-400">保存日時: <%= l(video.created_at, format: :long) %></div>
+            </div>
+          </div>
+        </li>
       <% end %>
+    </ul>
 
-      <%# 動画ファイルが付いていればそのまま再生 %>
-      <% if v.file.attached? %>
-        <div>
-          <%= video_tag url_for(v.file), controls: true, width: 480, poster: poster_url %>
-        </div>
-      <% else %>
-        <em>動画ファイル未添付</em>
-      <% end %>
-
-      <div style="font-size:12px;color:#666;">保存日時: <%= v.created_at %></div>
-    </li>
-  <% end %>
-</ul>
-<%=link_to "動画を投稿", new_video_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+    <div class="mt-6 text-right">
+      <%= link_to "動画を投稿", new_video_path, class: 'inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700' %>
+    </div>
+  </div>
+</div>

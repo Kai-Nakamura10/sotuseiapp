@@ -1,11 +1,14 @@
 class VideosController < ApplicationController
   def index
-    @videos = Video.with_attached_file.with_attached_thumbnail.order(created_at: :desc)
-    @video = Video.new
+    @videos = Video.includes(:user).with_attached_file.with_attached_thumbnail.order(created_at: :desc)
   end
 
   def new
     @video = Video.new
+  end
+
+  def edit
+    @video = Video.find(params[:id])
   end
 
   def create
@@ -22,6 +25,6 @@ class VideosController < ApplicationController
   private
 
   def video_params
-    params.require(:video).permit(:title, :description, :duration_seconds, :visibility, :file, :thumbnail)
+    params.require(:video).permit(:title, :description, :visibility, :file, :thumbnail)
   end
 end

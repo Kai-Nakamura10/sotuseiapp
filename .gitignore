@@ -38,3 +38,4 @@
 
 /node_modules
 /json
+/config/credentials/production.key

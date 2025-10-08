@@ -1,5 +1,7 @@
 class Video < ApplicationRecord
   belongs_to :user
+  has_many :video_tactics, dependent: :destroy
+  has_many :tactics, through: :video_tactics
   has_one_attached :file
   has_one_attached :thumbnail
 

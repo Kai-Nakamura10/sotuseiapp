@@ -7,6 +7,6 @@ class CreateVideoTactics < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :video_tactics, [:video_id, :tactic_id], unique: true
+    add_index :video_tactics, [ :video_id, :tactic_id ], unique: true
   end
 end

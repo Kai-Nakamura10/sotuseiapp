@@ -40,6 +40,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:                
+      RAILS_ENV: test
+      NODE_ENV: test
+
     services:
       postgres:
         image: postgres

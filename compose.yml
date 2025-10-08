@@ -14,6 +14,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  redis:
+    image: redis:7
+    restart: always
   web:
     build:
       context: .
@@ -25,24 +28,34 @@ services:
       - .:/myapp
       - bundle_data:/usr/local/bundle:cached
       - node_modules:/myapp/node_modules
-    env_file:
-      - .env
     environment:
       TZ: Asia/Tokyo
-      RAILS_ENV: development
-      AWS_EC2_METADATA_DISABLED: "1"
+      REDIS_URL: redis://redis:6379/0
     ports:
       - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
   worker:
-    build: .
-    command: bundle exec sidekiq -C config/sidekiq.yml
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /myapp
+    command: bash -lc "bundle install && bundle exec sidekiq -C config/sidekiq.yml"
+    volumes:
+      - .:/myapp
+      - bundle_data:/usr/local/bundle:cached
+    environment:
+      TZ: Asia/Tokyo
+      REDIS_URL: redis://redis:6379/0
     depends_on:
-      - redis
-  redis:
-    image: redis:7
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
 volumes:
   bundle_data:
   postgresql_data:

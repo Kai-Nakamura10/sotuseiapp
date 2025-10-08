@@ -40,6 +40,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:                
+      RAILS_ENV: test
+      NODE_ENV: test
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: ap-northeast-1
+
     services:
       postgres:
         image: postgres
@@ -97,3 +104,10 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::<993704921163>:role/<Playinsight-role>
+          aws-region: ap-northeast-1
+      - name: Who am I?
+        run: aws sts get-caller-identity

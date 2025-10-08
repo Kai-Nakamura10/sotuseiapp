@@ -43,6 +43,9 @@ jobs:
     env:                
       RAILS_ENV: test
       NODE_ENV: test
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: ap-northeast-1
 
     services:
       postgres:

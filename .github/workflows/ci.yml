@@ -104,3 +104,10 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+      - name: Run tests
+        env:
+          S3_BUCKET: playinsightbucket
+          S3_PREFIX: ci/${{ github.sha }}
+        run: |
+          bin/rails db:prepare
+          bin/rails test

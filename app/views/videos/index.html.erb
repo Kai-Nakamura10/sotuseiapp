@@ -26,6 +26,11 @@
 
               <div class="text-xs text-gray-400">保存日時: <%= l(video.created_at, format: :long) %></div>
             </div>
+            <% if video.respond_to?(:id) && video.id.present? %>
+              <%= link_to "動画詳細へ", video_path(video), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <% else %>
+              <span class="text-gray-400 px-4 py-2 rounded">詳細なし</span>
+            <% end %>
           </div>
         </li>
       <% end %>

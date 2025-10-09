@@ -8,7 +8,5 @@ class CreateVideos < ActiveRecord::Migration[8.0]
       t.string :visibility, null: false, default: "unlisted"
       t.timestamps
     end
-
-    add_index :videos, :visibility
   end
 end

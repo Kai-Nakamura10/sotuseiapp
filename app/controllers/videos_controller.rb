@@ -7,8 +7,27 @@ class VideosController < ApplicationController
     @video = Video.new
   end
 
-  def edit
+  def show
     @video = Video.find(params[:id])
+  end
+
+  def edit
+    @video = current_user.videos.find(params[:id])
+  end
+
+  def update
+    @video = current_user.videos.find(params[:id])
+    if @video.update(video_params)
+      redirect_to videos_path(@video)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @video = current_user.videos.find(params[:id])
+    @video.destroy!
+    redirect_to videos_path
   end
 
   def create

@@ -91,12 +91,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_044309) do
   end
 
   create_table "faqs", force: :cascade do |t|
+    t.string "body"
+    t.string "category"
+    t.integer "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "faqs_answers", force: :cascade do |t|
     t.bigint "faq_id", null: false
+    t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["faq_id"], name: "index_faqs_answers_on_faq_id"
@@ -204,20 +208,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_044309) do
     t.bigint "user_id", null: false
     t.string "title", null: false
     t.text "description"
-    t.string "youtube_video_id", null: false
     t.integer "duration_seconds"
-    t.string "privacy_status", default: "unlisted", null: false
-    t.string "processing_status", default: "uploaded", null: false
-    t.datetime "published_at"
-    t.string "thumbnail_url"
-    t.string "channel_id"
-    t.datetime "last_synced_at"
+    t.string "visibility", default: "unlisted", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["privacy_status"], name: "index_videos_on_privacy_status"
-    t.index ["processing_status"], name: "index_videos_on_processing_status"
     t.index ["user_id"], name: "index_videos_on_user_id"
-    t.index ["youtube_video_id"], name: "index_videos_on_youtube_video_id", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

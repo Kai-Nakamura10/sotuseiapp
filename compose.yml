@@ -17,6 +17,13 @@ services:
   redis:
     image: redis:7
     restart: always
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
   web:
     build:
       context: .
@@ -37,7 +44,7 @@ services:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
   worker:
     build:
       context: .
@@ -54,9 +61,11 @@ services:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
+    restart: always
 
 volumes:
   bundle_data:
   postgresql_data:
   node_modules:
+  redis_data:

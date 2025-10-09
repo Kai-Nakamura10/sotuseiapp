@@ -2,12 +2,12 @@
 # immediately if Redis is temporarily unavailable during container startup).
 # This implementation uses a plain TCP connection so it doesn't depend on the
 # redis gem being loaded during the boot sequence.
-require 'uri'
-require 'socket'
+require "uri"
+require "socket"
 
 redis_url = ENV.fetch("REDIS_URL", "redis://localhost:6379/0")
 uri = URI.parse(redis_url)
-host = uri.host || 'localhost'
+host = uri.host || "localhost"
 port = uri.port || 6379
 
 deadline = Time.now + 30

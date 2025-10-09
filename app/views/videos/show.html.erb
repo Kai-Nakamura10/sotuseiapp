@@ -1,0 +1,32 @@
+<video controls class="w-full h-auto max-w-4xl mx-auto mt-6 bg-black">
+  <% if @video.file.attached? %>
+    <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
+    お使いのブラウザは動画タグに対応していません。
+  <% else %>
+    <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
+  <% end %>
+</video>
+<div class="max-w-4xl mx-auto mt-6 p-4 bg-white shadow-md rounded">
+  <h1 class="text-2xl font-bold mb-4"><%= @video.title %></h1>
+  <p class="text-gray-700 mb-4"><%= @video.description %></p>
+  <p class="text-sm text-gray-500 mb-2">公開設定: <%= @video.visibility %></p>
+  <p class="text-sm text-gray-500 mb-2">長さ: <%= @video.duration_seconds.present? ? "#{@video.duration_seconds}秒" : "解析中…" %></p>
+  <p class="text-sm text-gray-500">保存日時: <%= l(@video.created_at, format: :long) %></p>
+  <div class="mt-4 flex space-x-2">
+    <%= link_to "動画を編集", edit_video_path(@video), class: 'inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700' %>
+    <%= link_to "動画一覧へ", videos_path, class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>
+    <%= link_to "削除", video_path(@video), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: 'inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700' %>
+  </div>
+</div>
+<h2 class="text-lg font-semibold mb-2">タイムライン</h2>
+<% if @video.timelines.any? %>
+  <ul class="list-disc list-inside space-y-2">
+    <% @video.timelines.each do |timeline| %>
+      <li>
+        <strong><%= timeline.timestamp %>:</strong> <%= timeline.description %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="text-gray-500">タイムラインはまだ追加されていません。</p>
+<% end %>

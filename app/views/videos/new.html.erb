@@ -12,7 +12,7 @@
 
   <div>
     <%= f.label :visibility %>
-    <%= f.select :visibility, [["公開","public"],["限定公開","unlisted"],["非公開","private"]] %>
+    <%= f.select :visibility, [%w[公開 public], %w[限定公開 unlisted], %w[非公開 private]], {}, {} %>
   </div>
 
   <div>

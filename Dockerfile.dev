@@ -2,7 +2,7 @@ FROM ruby:3.3.6
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
-# Node/Yarnリポジトリ登録（apt-key非使用）
+# Node リポジトリ登録（npmのみ）
 RUN apt-get update -qq \
  && apt-get install -y ca-certificates curl gnupg ffmpeg \
  && rm -rf /var/lib/apt/lists/* \
@@ -11,23 +11,26 @@ RUN apt-get update -qq \
       | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
  && NODE_MAJOR=20 \
  && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
-      | tee /etc/apt/sources.list.d/nodesource.list \
- && curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg \
-      | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg \
- && echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian stable main" \
-      | tee /etc/apt/sources.list.d/yarn.list
+      | tee /etc/apt/sources.list.d/nodesource.list
 
-# ネイティブ拡張用 & Node/Yarn
+# ネイティブ拡張 & Node（npm）
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
-      build-essential libpq-dev git nodejs yarn vim \
+      build-essential libpq-dev git nodejs vim \
   && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /myapp
 WORKDIR /myapp
 
-# Bundlerは必要ならバージョン指定（例：エラーに合わせて2.6.9）
+# Bundler
 RUN gem install bundler -v 2.6.9
-# RUN gem cleanup  # ← 削除推奨
 
-# 開発ではcomposeの `bundle install` に任せるならこのままでOK
+# Ruby 依存（キャッシュ効かせる）
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+# Node 依存（npm 統一）
+COPY package*.json ./
+RUN if [ -f package.json ]; then npm ci; fi
+
+# アプリ本体
 COPY . /myapp

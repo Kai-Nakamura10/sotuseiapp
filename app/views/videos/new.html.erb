@@ -1,5 +1,5 @@
 <h1>動画アップロード</h1>
-<%= form_with model: @video, local: true, html: { multipart: true } do |f| %>
+<%= form_with model: @video, local: true, html: { id: "upload-form" } do |f| %>
   <div>
     <%= f.label :title %>
     <%= f.text_field :title, placeholder: "タイトル" %>
@@ -17,7 +17,7 @@
 
   <div>
     <%= f.label :file, "動画ファイル" %>
-    <%= f.file_field :file, accept: "video/*", direct_upload: true %>
+    <%= f.file_field :file, id: "video-file" %>
   </div>
 
   <div>
@@ -25,7 +25,9 @@
     <%= f.file_field :thumbnail, accept: "image/*" %>
   </div>
 
-  <%= f.submit "アップロード" %>
+  <%= f.submit "アップロード", id: "upload-button" %>
 <% end %>
+
+<div id="upload-status"></div>
 
 <%=link_to "動画一覧へ", videos_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>

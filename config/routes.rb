@@ -14,9 +14,4 @@ Rails.application.routes.draw do
   root "static_pages#top"
   resources :users, only: %i[new create]
   resources :videos
-  namespace :api do
-    resources :uploads, only: [] do
-      collection { post :presigned_post }
-    end
-  end
 end

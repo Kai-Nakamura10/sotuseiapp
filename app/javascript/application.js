@@ -2,7 +2,6 @@ import "@hotwired/turbo-rails"
 import "./controllers"
 import "video.js";
 import "video.js/dist/video-js.css";
-import "./upload_to_s3";
 
 import videojs from "video.js";
 

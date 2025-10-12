@@ -38,6 +38,11 @@ services:
     environment:
       TZ: Asia/Tokyo
       REDIS_URL: redis://redis:6379/0
+      AWS_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET: playinsightbucket
+      AWS_EC2_METADATA_DISABLED: "true"
     ports:
       - "3000:3000"
     depends_on:

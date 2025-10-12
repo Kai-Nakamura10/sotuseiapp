@@ -6,7 +6,7 @@ namespace :s3 do
     Rails.logger.info "Using bucket OK"
 
     require "tempfile"
-    Tempfile.create(["demo", ".txt"]) do |f|
+    Tempfile.create([ "demo", ".txt" ]) do |f|
       f.write("This is a demo file.")
       f.flush
       obj = bucket.upload_io(f, key: "demo.txt", content_type: "text/plain")

@@ -31,24 +31,17 @@ class VideosController < ApplicationController
   end
 
   def create
-    @video = Video.new(video_params)
-    @video.user = current_user
+    @video = current_user.videos.new(video_params)
     if @video.save
-      respond_to do |format|
-        format.html { redirect_to videos_path, notice: "保存しました" }
-        format.json { render json: { id: @video.id }, status: :created }
-      end
+      redirect_to videos_path(@video)
     else
-      respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: { errors: @video.errors.full_messages }, status: :unprocessable_entity }
-      end
+      render :new, status: :unprocessable_entity
     end
   end
 
   private
 
   def video_params
-    params.require(:video).permit(:title, :description, :visibility, :file, :thumbnail, :source_key, :status)
+    params.require(:video).permit(:title, :description, :visibility, :file, :thumbnail)
   end
 end

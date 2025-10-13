@@ -61,7 +61,7 @@ jobs:
 
       # ★ AWSを使うテストがあるなら、ここで先に OIDC 認証しておく
       - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::993704921163:role/Playinsight-role
           aws-region: ap-northeast-1

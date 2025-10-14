@@ -201,6 +201,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_044309) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tag_id"], name: "index_video_tags_on_tag_id"
+    t.index ["video_id", "tag_id"], name: "index_video_tags_on_video_id_and_tag_id", unique: true
     t.index ["video_id"], name: "index_video_tags_on_video_id"
   end
 

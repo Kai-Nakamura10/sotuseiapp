@@ -1,4 +1,5 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :videos
-  validates :name, presence: true, uniqueness: true
+  has_many :video_tags, dependent: :destroy
+  has_many :videos, through: :video_tags
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 end

@@ -1,0 +1,9 @@
+<h1>タグ一覧</h1>
+<ul>
+  <% @tags.each do |tag| %>
+    <li>
+      <%= link_to tag.name, tag_path(tag) %>
+    </li>
+  <% end %>
+</ul>
+<%= link_to '動画一覧へ戻る', videos_path, class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>

@@ -13,5 +13,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "static_pages#top"
   resources :users, only: %i[new create]
-  resources :videos
+  resources :videos, only: [] do
+    resources :video_tags, only: %i[create destroy]
+  end
+  resources :tags, only: %i[index show create destroy new]
 end

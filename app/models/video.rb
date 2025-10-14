@@ -3,6 +3,8 @@ class Video < ApplicationRecord
   has_many :video_tactics, dependent: :destroy
   has_many :timelines, dependent: :destroy
   has_many :tactics, through: :video_tactics
+  has_many :video_tags, dependent: :destroy
+  has_many :tags, through: :video_tags
   has_one_attached :file
   has_one_attached :thumbnail
 
@@ -12,7 +14,7 @@ class Video < ApplicationRecord
   validates :visibility, inclusion: { in: %w[public unlisted private] }
   validates :duration_seconds, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
 
-  after_commit :enqueue_processing, on: %i[create update], if: -> { file.attached? }
+  after_commit :enqueue_processing, on: %i[create update], if: -> { saved_change_to_file_attachment? }
 
   private
   def enqueue_processing

@@ -1,1 +1,4 @@
-<li id="<%= dom_id(tag) %>">#<%= tag.name %></li>
+<li id="<%= dom_id(tag) %>" class="inline-flex items-center gap-2 px-2 py-1 bg-gray-100 rounded">
+  #<%= tag.name %>
+  <%= button_to "削除", video_video_tag_path(video, tag.id), method: :delete, data: { turbo_confirm: "外しますか？" }, class: "text-red-600" %>
+</li>

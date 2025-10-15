@@ -1,1 +1,1 @@
-<%= turbo_stream.append "video_tags", partial: "video_tags/tag", locals: { tag: @tag } %>
+<%= turbo_stream.append "video-tags", partial: "videos/tag", locals: { tag: @tag, video: @video } %>

@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "timelines_list" do %>
+  <%= render partial: "timelines/list", locals: { timelines: @timelines } %>
+<% end %>

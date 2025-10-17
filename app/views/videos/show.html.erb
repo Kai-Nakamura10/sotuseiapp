@@ -1,11 +1,30 @@
-<video controls class="w-full h-auto max-w-4xl mx-auto mt-6 bg-black">
-  <% if @video.file.attached? %>
-    <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
-    お使いのブラウザは動画タグに対応していません。
-  <% else %>
-    <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
-  <% end %>
-</video>
+<div class="max-w-4xl mx-auto mt-6">
+  <div class="relative">
+    <!-- ★ 一意のid と video-js クラスを追加 -->
+    <video
+      id="player-<%= @video.id %>"
+      class="video-js vjs-default-skin w-full h-auto bg-black"
+      controls
+      preload="auto"
+      playsinline
+    >
+      <% if @video.file.attached? %>
+        <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
+        お使いのブラウザは動画タグに対応していません。
+      <% else %>
+        <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
+      <% end %>
+    </video>
+
+    <!-- 戦術オーバーレイ（動画の上に重ねる） -->
+    <div
+      id="tactic-overlay"
+      data-video-id="<%= @video.id %>"
+      data-timelines-url="<%= all_video_timelines_path(@video) %>"
+      class="pointer-events-none absolute inset-0 flex items-start justify-center p-4"
+    ></div>
+  </div>
+</div>
 <h3>タグ</h3>
 <ul id="video-tags" class="flex gap-2 flex-wrap">
   <%= render partial: "videos/tag", collection: @video.tags, as: :tag, locals: { video: @video } %>
@@ -30,15 +49,29 @@
     <%= link_to "削除", video_path(@video), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: 'inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700' %>
   </div>
 </div>
+
 <h2 class="text-lg font-semibold mb-2">タイムライン</h2>
-<% if @video.timelines.any? %>
-  <ul class="list-disc list-inside space-y-2">
-    <% @video.timelines.each do |timeline| %>
-      <li>
-        <strong><%= timeline.timestamp %>:</strong> <%= timeline.description %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p class="text-gray-500">タイムラインはまだ追加されていません。</p>
+<div id="timelines_list">
+  <%= render partial: "timelines/list", locals: { timelines: @video.timelines.order(:start_seconds) } %>
+</div>
+
+<%= form_with model: [@video, Timeline.new], data: { turbo_stream: true } do |f| %>
+  <div class="mb-4">
+    <%= f.label :start_seconds, "開始時間 (秒)", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.number_field :start_seconds, step: "0.01", class: "mt-1 block w-full border rounded p-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :kind, "種別", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.select :kind, Timeline::KINDS.map { |k| [k.titleize, k] }, { include_blank: false }, class: "mt-1 block w-full border rounded p-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :body, "ノート / 説明", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_area :body, rows: 3, class: "mt-1 block w-full border rounded p-2" %>
+  </div>
+
+  <div>
+    <%= f.submit "タイムラインを追加", class: "bg-green-600 text-black px-4 py-2 rounded hover:bg-green-700" %>
+  </div>
 <% end %>

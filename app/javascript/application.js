@@ -1,7 +1,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "video.js";
-import "video.js/dist/video-js.css";
+import "./timelines_overlay";
 
 import videojs from "video.js";
 

@@ -13,9 +13,7 @@ class Video < ApplicationRecord
   validates :title, presence: true
   validates :visibility, inclusion: { in: %w[public unlisted private] }
   validates :duration_seconds, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
-
-  after_commit :enqueue_processing, on: %i[create update], if: -> { saved_change_to_file_attachment? }
-
+  after_create :enqueue_processing
   private
   def enqueue_processing
     VideoJob.perform_later(id)

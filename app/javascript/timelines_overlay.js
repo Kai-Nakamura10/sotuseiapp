@@ -1,91 +1,73 @@
 import videojs from "video.js";
 
 document.addEventListener("turbo:load", initOverlay);
-document.addEventListener("DOMContentLoaded", initOverlay);
 
-async function initOverlay() {
+function initOverlay() {
   const overlay = document.getElementById("tactic-overlay");
-  if (!overlay) return;
+  if (!overlay || overlay.dataset.inited) return;
+  overlay.dataset.inited = "1";
 
   const videoId = overlay.dataset.videoId;
-  const url = overlay.dataset.timelinesUrl;
   const videoEl = document.getElementById(`player-${videoId}`);
   if (!videoEl) return;
 
-  // video.js のインスタンス取得（既に初期化済みならそれを使う）
-  const player = (videoEl.player && videoEl.player.on) ? videoEl.player : (window.videojs ? videojs(videoEl) : null);
-  if (!player) {
-    console.error("video.js player not available");
-    return;
-  }
+  const player = (videoEl.player && videoEl.player.on) ? videoEl.player
+                : (window.videojs ? videojs(videoEl) : null);
+  if (!player) return;
 
-  // タイムライン取得（認証が必要なら same-origin）
-  let timelines = [];
-  try {
-    const res = await fetch(url, { credentials: "same-origin" });
-    if (!res.ok) {
-      console.error("timelines load failed:", res.status);
-      return;
-    }
-    timelines = await res.json();
-  } catch (err) {
-    console.error("timelines fetch error:", err);
-    return;
-  }
+  const badge = document.getElementById(`tactic-badge-${videoId}`);
+  if (!badge) return;
 
-  // 正規化
-  timelines = timelines.map((t) => ({
-    id: t.id,
-    kind: t.kind,
-    start_seconds: Number(t.start_seconds),
-    end_seconds: t.end_seconds != null ? Number(t.end_seconds) : null,
-    title: t.title,
-    body: t.body,
-    payload: t.payload || {},
-  }));
+  function readTimelinesFromDOM() {
+    const list = document.getElementById("timelines_list");
+    if (!list) return [];
 
-  let lastHitIds = "";
+    const items = Array.from(list.querySelectorAll('[id^="timeline_"]'));
+    return items.map((el) => {
+      const timeText = el.querySelector(".text-sm")?.textContent || "";
+      const m = timeText.match(/([\d.]+)/);
+      const start = m ? parseFloat(m[1]) : 0;
 
-  const getHits = (time) =>
-    timelines.filter((x) => {
-      const end = x.end_seconds != null ? x.end_seconds : x.start_seconds;
-      return x.start_seconds <= time && end >= time;
+      const title = el.querySelector(".text-gray-800")?.textContent?.trim() || "";
+      return { id: el.id, start, end: null, title, body: "" };
     });
-
-  function escapeHtml(s = "") {
-    return String(s).replace(/[&<>"']/g, (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
-    );
   }
 
-  function render(hits) {
-    if (!hits || hits.length === 0) {
-      overlay.innerHTML = "";
-      return;
-    }
-    const first = hits[0];
-    overlay.innerHTML = `
-      <div class="bg-black/60 text-white p-3 rounded max-w-xl text-center pointer-events-none">
-        <div class="font-bold text-lg">${escapeHtml(first.title || first.kind)}</div>
-        <div class="mt-1 text-sm">${escapeHtml(first.body || "")}</div>
-      </div>
-    `;
+  let timelines = readTimelinesFromDOM();
+
+  document.addEventListener("turbo:frame-load", () => { timelines = readTimelinesFromDOM(); });
+  document.addEventListener("turbo:render",     () => { timelines = readTimelinesFromDOM(); });
+
+  const hitsAt = (t) => timelines.filter(x => {
+    const end = x.end != null ? x.end : x.start;
+    return x.start <= t && end >= t;
+  });
+
+  const esc = (s="") => String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+
+  function showBadge(hit) {
+    badge.innerHTML = `<div class="font-bold mb-0.5">${esc(hit.title || "戦術")}</div>`;
+    badge.style.left = "auto";
+    badge.style.right = "12px";
+    badge.style.top = "12px";
+    badge.style.transform = "";
+    badge.classList.remove("hidden");
+  }
+  function hideBadge(){ badge.classList.add("hidden"); }
+
+  let last = "";
+  function renderAt(t) {
+    const arr = hitsAt(t);
+    const sig = arr.map(a=>a.id).join(",");
+    if (sig === last) return;
+    last = sig;
+
+    if (arr.length === 0) hideBadge();
+    else showBadge(arr[0]);
   }
 
-  // player.ready で登録（video.js のライフサイクルに合わせる）
   player.ready(() => {
-    player.on("timeupdate", () => {
-      const t = Number(player.currentTime && player.currentTime() !== undefined ? player.currentTime() : 0);
-      const hits = getHits(t);
-      const hitIds = hits.map((h) => h.id).join(",");
-      if (hitIds !== lastHitIds) {
-        lastHitIds = hitIds;
-        render(hits);
-      }
-    });
-
-    // 初期描画（再生前の時点を反映）
-    const initialTime = Number(player.currentTime ? player.currentTime() : 0);
-    render(getHits(initialTime));
+    renderAt(Number(player.currentTime?.() || 0));
+    player.on("timeupdate", () => renderAt(Number(player.currentTime?.() || 0)));
   });
 }

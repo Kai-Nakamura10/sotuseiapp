@@ -15,8 +15,10 @@ Rails.application.routes.draw do
   resources :users, only: %i[new create]
   resources :videos do
     resources :video_tags, only: %i[create destroy]
-    resources :timelines, shallow: true do
-      collection { get :all }
+    resources :timelines, shallow: true, constraints: { format: :html } do
+      collection do
+        get :all, constraints: { format: :html }
+      end
     end
   end
   resources :tags, only: %i[index show create destroy new]

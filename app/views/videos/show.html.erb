@@ -1,9 +1,8 @@
 <div class="max-w-4xl mx-auto mt-6">
   <div class="relative">
-    <!-- ★ 一意のid と video-js クラスを追加 -->
     <video
       id="player-<%= @video.id %>"
-      class="video-js vjs-default-skin w-full h-auto bg-black"
+      class="video-js vjs-default-skin w-full h-auto bg-black mx-auto max-w-4xl mt-6"
       controls
       preload="auto"
       playsinline
@@ -15,14 +14,21 @@
         <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
       <% end %>
     </video>
-
-    <!-- 戦術オーバーレイ（動画の上に重ねる） -->
     <div
       id="tactic-overlay"
       data-video-id="<%= @video.id %>"
-      data-timelines-url="<%= all_video_timelines_path(@video) %>"
-      class="pointer-events-none absolute inset-0 flex items-start justify-center p-4"
-    ></div>
+      class="pointer-events-none absolute inset-0 z-20"
+    >
+      <div
+        id="tactic-badge-<%= @video.id %>"
+        class="absolute hidden max-w-[80%]
+              bg-white/85 backdrop-blur-sm text-gray-900
+              text-sm md:text-base font-semibold
+              rounded-md px-3 py-2
+              shadow-xl ring-1 ring-black/10"
+        style="transform: translate(-50%, -100%);"
+      ></div>
+    </div>
   </div>
 </div>
 <h3>タグ</h3>
